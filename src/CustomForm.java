@@ -8,7 +8,7 @@ public class CustomForm implements ChangeListener {
     private JSlider sCellRow, sCellCol, sSumMines;
     private JLabel lCellRow, lCellCol, lSumMines;
     private int cellRow, cellCol, sumMines, resCellRow, resCellCol, resSumMines;
-    private boolean customed = false;
+    private boolean canceled = true;
 
     private JPanel panel;
 
@@ -41,7 +41,7 @@ public class CustomForm implements ChangeListener {
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
 
-            this.customed = true;
+            this.canceled = false;
 
             resCellRow = sCellRow.getValue();
             resCellCol = sCellCol.getValue();
@@ -60,8 +60,8 @@ public class CustomForm implements ChangeListener {
         }
     }
 
-    public boolean isCustomed(){
-        return customed;
+    public boolean isCanceled(){
+        return canceled;
     }
 
     public int getCellRow() {

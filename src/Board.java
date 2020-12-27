@@ -1,6 +1,8 @@
 import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.*;
 
 public class Board extends JPanel implements MouseListener {
@@ -12,6 +14,7 @@ public class Board extends JPanel implements MouseListener {
     private boolean isSoundOn;
     private int sisa;
     private Tile[][] tiles;
+    private List<GameListener> listeners = new ArrayList<GameListener>();
 
     public Board(){
         this(5, 5, 3, true);
@@ -115,7 +118,8 @@ public class Board extends JPanel implements MouseListener {
 
         if(this.sisa == sumMines) {
             System.out.println("Win!");
-            showDialog("You Won!", "Want to restart the game?");
+            for (GameListener gl : listeners)
+                gl.onWon();
         }
     }
 
@@ -129,7 +133,8 @@ public class Board extends JPanel implements MouseListener {
                 }
             }
         }
-        showDialog("You Lose!", "Want to try again?");
+        for (GameListener gl : listeners)
+            gl.onGameOver();
     }
 
     public void reveal(int r, int c){
@@ -156,17 +161,8 @@ public class Board extends JPanel implements MouseListener {
         }
     }
 
-    public void showDialog(String title, String message){
-        int result = JOptionPane.showConfirmDialog(null, message,title,
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE);
-        if(result == JOptionPane.YES_OPTION){
-            initGame();
-        }else if (result == JOptionPane.NO_OPTION){
-            System.exit(0);
-        }else {
-            System.exit(0);
-        }
+    public void addListener(GameListener toAdd) {
+        listeners.add(toAdd);
     }
 
     @Override
