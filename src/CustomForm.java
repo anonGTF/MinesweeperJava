@@ -17,8 +17,8 @@ public class CustomForm implements ChangeListener {
         this.cellCol = cellCol;
         this.sumMines = sumMines;
 
-        sCellRow = new JSlider(3, 20, cellRow);
-        sCellCol = new JSlider(3, 30, cellCol);
+        sCellRow = new JSlider(3, 12, cellRow);
+        sCellCol = new JSlider(3, 25, cellCol);
         sSumMines = new JSlider(1, 50, 25);
 
         sCellRow.addChangeListener(this);

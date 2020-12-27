@@ -1,5 +1,6 @@
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
+import java.awt.*;
 
 public class Tile extends JButton{
     private int r,c;   //position
@@ -11,6 +12,7 @@ public class Tile extends JButton{
         this.r = r;
         this.c = c;
         flagged = false;
+        this.setPreferredSize(new Dimension(50, 50));
     }
 
     public void toggle(){
