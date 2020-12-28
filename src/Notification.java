@@ -1,9 +1,10 @@
 import javax.swing.*;
+import java.util.List;
 
 public class Notification {
     private int result;
 
-    public Notification(String title, String[] messages){
+    public Notification(String title, List<String> messages){
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));

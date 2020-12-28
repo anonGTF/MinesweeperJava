@@ -2,18 +2,33 @@ import javax.swing.*;
 import javax.swing.text.BoxView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class Minesweeper  implements ActionListener, GameListener {
+    private static final String EASY = "easy";
+    private static final String MEDIUM = "medium";
+    private static final String HARD = "hard";
+    private static final String CUSTOM = "custom";
     private JFrame frame;
     private Menu menu;
     private Board board;
     private Header header;
     private JPanel mainPanel;
+    private HighScoreManager highScoreManager;
+    private HashMap<String, Integer> highScore;
+    private String difficulty;
 
     public Minesweeper(){
+
+        highScoreManager = new HighScoreManager();
+        highScore = highScoreManager.getHighScore();
+        difficulty = EASY;
         menu = new Menu(this);
         board = new Board();
-        header = new Header(3);
+        header = new Header(3, "easy", highScore);
         mainPanel = new JPanel();
 
         board.addListener(this);
@@ -38,20 +53,24 @@ public class Minesweeper  implements ActionListener, GameListener {
         int cellCol = 0;
         int sumMines = 0;
         boolean isCanceled = false;
+        String highScoreLabelText;
 
         header.getTicker().pause();
 
         if(e.getSource() == menu.getEasy()){
+            difficulty = EASY;
             cellRow = 5;
             cellCol = 5;
             sumMines = 3;
         }
         else if(e.getSource() == menu.getMedium()){
+            difficulty = MEDIUM;
             cellRow = 10;
             cellCol = 10;
             sumMines = 15;
         }
         else if(e.getSource() == menu.getHard()){
+            difficulty = HARD;
             cellRow = 10;
             cellCol = 15;
             sumMines = 30;
@@ -65,6 +84,7 @@ public class Minesweeper  implements ActionListener, GameListener {
             board.setSoundOn(false);
         }
         else if(e.getSource() == menu.getCustom()){
+            difficulty = CUSTOM;
             CustomForm customForm = new CustomForm(board.getCellRow(), board.getCellCol(), board.getSumMines());
             cellRow = customForm.getCellRow();
             cellCol = customForm.getCellCol();
@@ -86,12 +106,30 @@ public class Minesweeper  implements ActionListener, GameListener {
             frame.pack();
             frame.setVisible(true);
         }
+
+        if (difficulty.equals(CUSTOM)) {
+            highScoreLabelText = "Customed";
+        } else if (highScore.get(difficulty) == 0) {
+            highScoreLabelText = "Highest: -";
+        } else {
+            highScoreLabelText = "Highest: " + highScore.get(difficulty);
+        }
+        header.getHighScoreLabel().setText(highScoreLabelText);
     }
 
     @Override
     public void onWon() {
+        int score = Math.max(header.getTicker().getSeconds(), 1); // set highest score to 1
+        List<String> messages = new ArrayList<String>();
+        messages.add("Your score is " + score);
+        if (!difficulty.equals(CUSTOM) && (score < highScore.get(difficulty) || highScore.get(difficulty) == 0)) {
+            highScore.replace(difficulty, score);
+            header.getHighScoreLabel().setText("Highest: " + highScore.get(difficulty));
+            highScoreManager.updateHighScore();
+            messages.add("This is a new high score!");
+        }
+        messages.add("Want to restart the game?");
         header.getTicker().pause();
-        String[] messages = {"Your score is " + header.getTicker().getSeconds(), "Want to restart the game?"};
         Notification notification = new Notification("You Won!", messages);
         notificationHandler(notification);
     }
@@ -99,7 +137,8 @@ public class Minesweeper  implements ActionListener, GameListener {
     @Override
     public void onGameOver() {
         header.getTicker().pause();
-        String[] messages = {"Want to try again?"};
+        List<String> messages = new ArrayList<String>();
+        messages.add("Want to try again?");
         Notification notification = new Notification("You Lose!", messages);
         notificationHandler(notification);
     }

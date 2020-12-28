@@ -14,6 +14,7 @@ public class Board extends JPanel implements MouseListener {
     private boolean isSoundOn;
     private int sisa;
     private Tile[][] tiles;
+    private HighScoreManager highScoreManager;
     private List<GameListener> listeners = new ArrayList<GameListener>();
     private AudioManager audioManager = new AudioManager();
 
