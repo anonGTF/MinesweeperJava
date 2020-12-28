@@ -18,7 +18,7 @@ public class Tile extends JButton{
     public void toggle(){
         flagged = !flagged;
         if(flagged){
-            this.setIcon(new ImageIcon("flag.png"));
+            this.setIcon(new ImageIcon("src/assets/flag.png"));
         }else{
             this.setIcon(null);
         }

@@ -57,9 +57,11 @@ public class Minesweeper  implements ActionListener, GameListener {
             sumMines = 30;
         }
         else if(e.getSource() == menu.getSoundOn()){
+            isCanceled = true;
             board.setSoundOn(true);
         }
-        else if(e.getSource() == menu.getSoundOn()){
+        else if(e.getSource() == menu.getSoundOff()){
+            isCanceled = true;
             board.setSoundOn(false);
         }
         else if(e.getSource() == menu.getCustom()){
@@ -88,18 +90,23 @@ public class Minesweeper  implements ActionListener, GameListener {
 
     @Override
     public void onWon() {
-        Notification notification = new Notification("You Won!", "Want to restart the game?");
+        header.getTicker().pause();
+        String[] messages = {"Your score is " + header.getTicker().getSeconds(), "Want to restart the game?"};
+        Notification notification = new Notification("You Won!", messages);
         notificationHandler(notification);
     }
 
     @Override
     public void onGameOver() {
-        Notification notification = new Notification("You Lose!", "Want to try again?");
+        header.getTicker().pause();
+        String[] messages = {"Want to try again?"};
+        Notification notification = new Notification("You Lose!", messages);
         notificationHandler(notification);
     }
 
     private void notificationHandler(Notification notification) {
         if(notification.getResult() == JOptionPane.YES_OPTION){
+            header.getTicker().unpause();
             header.getTicker().reset();
             header.getTicker().start();
             board.initGame();

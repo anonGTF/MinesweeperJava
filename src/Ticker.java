@@ -34,8 +34,8 @@ public class Ticker extends JLabel implements ActionListener{
         Ticker.super.setText(secondsString);
     }
 
-    public String getSecondsString() {
-        return secondsString;
+    public int getSeconds() {
+        return seconds;
     }
 
     @Override

@@ -15,6 +15,7 @@ public class Board extends JPanel implements MouseListener {
     private int sisa;
     private Tile[][] tiles;
     private List<GameListener> listeners = new ArrayList<GameListener>();
+    private AudioManager audioManager = new AudioManager();
 
     public Board(){
         this(5, 5, 3, true);
@@ -102,7 +103,7 @@ public class Board extends JPanel implements MouseListener {
         for(int row = 0; row < tiles.length; row++) {
             for(int col = 0; col < tiles[0].length; col++) {
                 if(tiles[row][col].isMined()) {
-                    tiles[row][col].setIcon(new ImageIcon("mine.png"));
+                    tiles[row][col].setIcon(new ImageIcon("src/assets/mine.png"));
                     tiles[row][col].setText("*");
                 }else{
                     tiles[row][col].setText(tiles[row][col].getCount()+"");
@@ -118,6 +119,7 @@ public class Board extends JPanel implements MouseListener {
 
         if(this.sisa == sumMines) {
             System.out.println("Win!");
+            if (isSoundOn) audioManager.gameWonSfxPlay();
             for (GameListener gl : listeners)
                 gl.onWon();
         }
@@ -129,10 +131,11 @@ public class Board extends JPanel implements MouseListener {
         for(int r = 0; r < tiles.length; r++){
             for(int c = 0; c < tiles[0].length; c++){
                 if(tiles[r][c].isMined()){
-                    tiles[r][c].setIcon(new ImageIcon("mine.png"));
+                    tiles[r][c].setIcon(new ImageIcon("src/assets/mine.png"));
                 }
             }
         }
+        if (isSoundOn) audioManager.gameOverSfxPlay();
         for (GameListener gl : listeners)
             gl.onGameOver();
     }
@@ -168,6 +171,7 @@ public class Board extends JPanel implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent arg0) {
         if(arg0.getButton()==1) {
+            if (isSoundOn) audioManager.leftClickedSfxPlay();
             if (this.showLog) System.out.println("left"); // left click
             Tile t = (Tile)(arg0.getComponent());
             System.out.print("clicked: ");
@@ -181,11 +185,11 @@ public class Board extends JPanel implements MouseListener {
             }
 
         }else if(arg0.getButton()==3) {
+            if (isSoundOn) audioManager.rightClickedSfxPlay();
             if (this.showLog) System.out.println("right"); // right click
             Tile t = (Tile)(arg0.getComponent());
             t.toggle();
         }
-
     }
 
     @Override
