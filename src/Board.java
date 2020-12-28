@@ -14,8 +14,7 @@ public class Board extends JPanel implements MouseListener {
     private boolean isSoundOn;
     private int sisa;
     private Tile[][] tiles;
-    private HighScoreManager highScoreManager;
-    private List<GameListener> listeners = new ArrayList<GameListener>();
+    private List<GameListener> listeners = new ArrayList<>();
     private AudioManager audioManager = new AudioManager();
 
     public Board(){
@@ -97,21 +96,6 @@ public class Board extends JPanel implements MouseListener {
                 updateCount(row,col);
             }
         }
-    }
-
-    /* menampilkan mines untuk keperluan debugging */
-    public void displayMines() {
-        for(int row = 0; row < tiles.length; row++) {
-            for(int col = 0; col < tiles[0].length; col++) {
-                if(tiles[row][col].isMined()) {
-                    tiles[row][col].setIcon(new ImageIcon("src/assets/mine.png"));
-                    tiles[row][col].setText("*");
-                }else{
-                    tiles[row][col].setText(tiles[row][col].getCount()+"");
-                }
-            }
-        }
-        repaint();
     }
 
     /* cek kondisi apakah sudah menang atau belum */
@@ -239,10 +223,6 @@ public class Board extends JPanel implements MouseListener {
 
     public void setSumMines(int sumMines) {
         this.sumMines = sumMines;
-    }
-
-    public boolean isSoundOn() {
-        return isSoundOn;
     }
 
     public void setSoundOn(boolean soundOn) {

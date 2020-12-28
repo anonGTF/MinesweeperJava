@@ -47,9 +47,6 @@ public class CustomForm implements ChangeListener {
             resCellCol = sCellCol.getValue();
             resSumMines = Math.max(sSumMines.getValue() * resCellRow * resCellCol / 100, 1); // set minimal mines to 1
 
-            System.out.println(resCellRow
-                    + " " + resCellCol
-                    + " " + resSumMines);
             try {
                 this.cellRow = resCellRow;
                 this.cellCol = resCellCol;

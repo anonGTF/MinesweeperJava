@@ -3,8 +3,8 @@ import javax.swing.ImageIcon;
 import java.awt.*;
 
 public class Tile extends JButton{
-    private int r,c;   //position
-    private int count; //how many surrounding bomb does it have?
+    private int r,c;   //posisi
+    private int count; //jumlah bom di sekitar tile
     private boolean isMine;
     private boolean flagged;
 
@@ -40,23 +40,11 @@ public class Tile extends JButton{
         return this.count;
     }
 
-    public void setCount(int count) {
-        this.count = count;
-    }
-
     public int getR() {
         return this.r;
     }
 
-    public void setR(int r) {
-        this.r = r;
-    }
-
     public int getC() {
         return this.c;
-    }
-
-    public void setC(int c) {
-        this.c = c;
     }
 }

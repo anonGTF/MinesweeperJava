@@ -1,8 +1,6 @@
 import javax.swing.*;
-import javax.swing.text.BoxView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +10,15 @@ public class Minesweeper  implements ActionListener, GameListener {
     private static final String MEDIUM = "medium";
     private static final String HARD = "hard";
     private static final String CUSTOM = "custom";
+    private static final int CELL_ROW_EASY = 5;
+    private static final int CELL_COL_EASY = 5;
+    private static final int SUM_MINES_EASY = 3;
+    private static final int CELL_ROW_MEDIUM = 10;
+    private static final int CELL_COL_MEDIUM = 10;
+    private static final int SUM_MINES_MEDIUM = 15;
+    private static final int CELL_ROW_HARD = 10;
+    private static final int CELL_COL_HARD = 15;
+    private static final int SUM_MINES_HARD = 30;
     private JFrame frame;
     private Menu menu;
     private Board board;
@@ -59,21 +66,21 @@ public class Minesweeper  implements ActionListener, GameListener {
 
         if(e.getSource() == menu.getEasy()){
             difficulty = EASY;
-            cellRow = 5;
-            cellCol = 5;
-            sumMines = 3;
+            cellRow = CELL_ROW_EASY;
+            cellCol = CELL_COL_EASY;
+            sumMines = SUM_MINES_EASY;
         }
         else if(e.getSource() == menu.getMedium()){
             difficulty = MEDIUM;
-            cellRow = 10;
-            cellCol = 10;
-            sumMines = 15;
+            cellRow = CELL_ROW_MEDIUM;
+            cellCol = CELL_COL_MEDIUM;
+            sumMines = SUM_MINES_MEDIUM;
         }
         else if(e.getSource() == menu.getHard()){
             difficulty = HARD;
-            cellRow = 10;
-            cellCol = 15;
-            sumMines = 30;
+            cellRow = CELL_ROW_HARD;
+            cellCol = CELL_COL_HARD;
+            sumMines = SUM_MINES_HARD;
         }
         else if(e.getSource() == menu.getSoundOn()){
             isCanceled = true;
@@ -120,7 +127,7 @@ public class Minesweeper  implements ActionListener, GameListener {
     @Override
     public void onWon() {
         int score = Math.max(header.getTicker().getSeconds(), 1); // set highest score to 1
-        List<String> messages = new ArrayList<String>();
+        List<String> messages = new ArrayList<>();
         messages.add("Your score is " + score);
         if (!difficulty.equals(CUSTOM) && (score < highScore.get(difficulty) || highScore.get(difficulty) == 0)) {
             highScore.replace(difficulty, score);
@@ -137,7 +144,7 @@ public class Minesweeper  implements ActionListener, GameListener {
     @Override
     public void onGameOver() {
         header.getTicker().pause();
-        List<String> messages = new ArrayList<String>();
+        List<String> messages = new ArrayList<>();
         messages.add("Want to try again?");
         Notification notification = new Notification("You Lose!", messages);
         notificationHandler(notification);
