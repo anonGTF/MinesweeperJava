@@ -4,7 +4,7 @@ import javax.swing.*;
 public class Ticker extends JLabel implements ActionListener{
     private int elapsedTime = 0;
     private int seconds =0;
-    private String secondsString = String.format("%02d", seconds);
+    private String secondsString = String.format("%03d", seconds);
     private Timer timer;
     private boolean isPaused = false;
 

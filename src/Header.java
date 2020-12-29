@@ -6,7 +6,7 @@ public class Header extends JPanel {
 
     private int sumMines;
     private JLabel mines, highScoreLabel;
-    Ticker ticker;
+    private Ticker ticker;
 
     public Header(int sumMines, String difficulty, HashMap<String, Integer> highScore){
         this.sumMines = sumMines;

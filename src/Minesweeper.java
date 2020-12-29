@@ -91,37 +91,16 @@ public class Minesweeper  implements ActionListener, GameListener {
             board.setSoundOn(false);
         }
         else if(e.getSource() == menu.getCustom()){
-            difficulty = CUSTOM;
             CustomForm customForm = new CustomForm(board.getCellRow(), board.getCellCol(), board.getSumMines());
             cellRow = customForm.getCellRow();
             cellCol = customForm.getCellCol();
             sumMines = customForm.getSumMines();
             isCanceled = customForm.isCanceled();
+            difficulty = (isCanceled) ? difficulty : CUSTOM;
         }
-
         header.getTicker().unpause();
 
-        if (!isCanceled){
-            header.setSumMines(sumMines);
-            board.setCellCol(cellCol);
-            board.setCellRow(cellRow);
-            board.setSumMines(sumMines);
-
-            header.getTicker().reset();
-            header.getTicker().start();
-            board.initGame();
-            frame.pack();
-            frame.setVisible(true);
-        }
-
-        if (difficulty.equals(CUSTOM)) {
-            highScoreLabelText = "Customed";
-        } else if (highScore.get(difficulty) == 0) {
-            highScoreLabelText = "Highest: -";
-        } else {
-            highScoreLabelText = "Highest: " + highScore.get(difficulty);
-        }
-        header.getHighScoreLabel().setText(highScoreLabelText);
+        handleMenuResult(isCanceled, sumMines, cellCol, cellRow);
     }
 
     @Override
@@ -148,6 +127,46 @@ public class Minesweeper  implements ActionListener, GameListener {
         messages.add("Want to try again?");
         Notification notification = new Notification("You Lose!", messages);
         notificationHandler(notification);
+    }
+
+    private void handleMenuResult(boolean isCanceled, int sumMines, int cellCol, int cellRow){
+        String highScoreLabelText;
+
+        if (!isCanceled){
+            header.setSumMines(sumMines);
+            board.setCellCol(cellCol);
+            board.setCellRow(cellRow);
+            board.setSumMines(sumMines);
+
+            header.getTicker().reset();
+            header.getTicker().start();
+            board.initGame();
+            frame.pack();
+            frame.setVisible(true);
+        } else {
+            switch (difficulty) {
+                case EASY :
+                    menu.getEasy().setSelected(true);
+                    break;
+                case MEDIUM :
+                    menu.getMedium().setSelected(true);
+                    break;
+                case HARD :
+                    menu.getHard().setSelected(true);
+                    break;
+                default:
+                    menu.getCustom().setSelected(true);
+            }
+        }
+
+        if (difficulty.equals(CUSTOM)) {
+            highScoreLabelText = "Customed";
+        } else if (highScore.get(difficulty) == 0) {
+            highScoreLabelText = "Highest: -";
+        } else {
+            highScoreLabelText = "Highest: " + highScore.get(difficulty);
+        }
+        header.getHighScoreLabel().setText(highScoreLabelText);
     }
 
     private void notificationHandler(Notification notification) {
